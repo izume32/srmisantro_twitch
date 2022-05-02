@@ -4,6 +4,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
+
+	<script src="./jquery.min.js"></script>
 </head>
 <body>
 	<style>
@@ -24,22 +26,37 @@
 		text-decoration: none;
 		padding: 4px 6px;
 	}
+
+	table {
+		font-size: 14px;
+	}
+
+	.comando {
+		 font-weight: bold;
+		 width: 30%;
+	}
+
+	.descripcion {
+		width: 70%;
+	}
 	</style>
 
-	<div style="width: 25%; margin: 45px auto;">
-		<div style="background-color: #efeef1; width: 100%; height: 50px;">
-			
+	<div style="width: 30%; margin: 45px auto;">
+		<div style="background-color: #efeef1; width: 100%; text-align: center; display: flex; height: 50px;flex-direction: row;flex-wrap: nowrap;justify-content: center;">
+			<img src="./Logo Misantro.svg" style="width: 130px;" alt="">
 		</div>
 		<div style="background-color: #ffffff; width: 100%; height: 650px;">
 			<div style="padding: 15px 15px;">
 
-				<div style="text-align: center; margin-bottom: 15px;">
+				
+				<!--
+				<div style="text-align: center; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
 					<span style="font-size: 25px; font-weight: bold; color: #3e3c41;">
-						Comandos
+						Comandos generales
 					</span>
 				</div>
 
-				<table style="width: 100%;">
+				<table style="width: 100%; text-align: left;">
 					<thead>
 						<tr>
 							<th>
@@ -50,34 +67,76 @@
 							</th>
 						</tr>
 					</thead>
-					<thead>
+					<tbody>
 						<tr>
 							
 						</tr>
-					</thead>
+					</tbody>
 				</table>
+				-->
 
+				<div class="categorias">
+					
+				</div>
 			</div>
 		</div>
-
 	</div>
 
 	<script>
 	
 	var comandos = [
-		{comando: '!steam', descripcion: 'Te da el link pa que me agregues en Steam :D'},
-		{comando: '!titulo', descripcion: 'Devuelve el titulo actual del stream'},
-		{comando: '!categoria', descripcion: 'Deveulve la categeoria actual del stream'},
-		{comando: '!seguidores', descripcion: 'Devuelve la cantidad de seguidores actuales'},
-		{comando: '!clip', descripcion: 'Genera un clip de los ultimos 30 segundos'},
-		{comando: '!cancion', descripcion: 'Info de la song actual'},
-		{comando: '!maestria {campeon}', descripcion: 'Info sobre mi maestria de algun campeon'},
-		{comando: '!ranked', descripcion: 'Tier rank en SoloQ del LoL'},
-		{comando: 'F', descripcion: 'Genera un punto en el contador de F de la categoria'},
-		{comando: '!lastgame', descripcion: 'Arroja datos sobre mi ultima partida.'}
+		{comando: '!titulo', categoria: 'general', descripcion: 'Titulo actual del stream'},
+		{comando: '!categoria', categoria: 'general', descripcion: 'Categeoria actual del stream'},
+		{comando: '!seguidores', categoria: 'general', descripcion: 'Cantidad de seguidores actuales'},
+		{comando: '!clip', categoria: 'general', descripcion: 'Genera un clip de los ultimos 30 segundos'},
+		{comando: '!cancion', categoria: 'musica', descripcion: 'Info de la song actual'},
+		{comando: '!song', categoria: 'musica', descripcion: 'Agrega una cancion a la cola de canciones del stream'},
+		{comando: '!play', categoria: 'musica', descripcion: 'Reanuda la musica del stream'},
+		{comando: '!stop', categoria: 'musica', descripcion: 'Pausa la musica del stream'},
+		{comando: '!next', categoria: 'musica', descripcion: 'Cambia la cancion a la siguiente'},
+		{comando: '!back', categoria: 'musica', descripcion: 'Cambia la cancion a la anterior'},
+		{comando: '!maestria {campeon}', categoria: 'League of Legends', descripcion: 'Info sobre mi maestria de algun campeon'},
+		{comando: '!ranked', categoria: 'League of Legends', descripcion: 'Tier rank en SoloQ del LoL'},
+		{comando: 'F', categoria: 'general', descripcion: 'Genera un punto en el contador de F de la categoria'},
+		{comando: '!lastgame', categoria: 'League of Legends', descripcion: 'Arroja datos sobre mi ultima partida.'}
 	];
 
 	console.log(comandos);
+
+	comandos.forEach(function(v, k) {
+
+		var table= null;
+
+		if($(`[category-name="${v.categoria}"]`).length < 1) {
+
+			var divCat = $('<div></div>').attr('category-name', v.categoria);
+
+			divCat.append( $(`<div style="text-align: center; font-size: 1.5em; font-weight: bold; text-transform: uppercase; margin-bottom: 15px; margin-top: 15px;">${v.categoria}</div>`) );
+
+		 	table = $('<table style="width: 100%; text-align: left;"></table>');
+
+			var tr = $('<tr></tr>');
+
+			tr.append( `<th class="comando"></th>` );
+			tr.append( `<th class="descripcion"></th>` );
+
+			table.append( tr );
+
+			var stemp = divCat.appendTo('.categorias');
+
+			table.appendTo(stemp);
+		}
+		else {
+			table = $(`[category-name="${v.categoria}"] table`);
+		}
+
+		var tr = $('<tr></tr>');
+
+		tr.append( `<td class="comando">${v.comando}</td>` );
+		tr.append( `<td class="descripcion">${v.descripcion}</td>` );
+
+		table.append( tr );
+	});
 
 	</script>
 </body>
